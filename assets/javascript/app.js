@@ -13,30 +13,77 @@ firebase.initializeApp(firebaseConfig);
 
 let db = firebase.database();
 
-//Retrieving and submitting user data to store in Firebase
-$("#submit-button").on("click", function () {
-    event.preventDefault();
+// jQueryValidation library for checking forms
+// It has it's own submit handler function as well
+$(document).ready(function () {
 
-    let name = $("#name").val().trim();
-    let destination = $("#destination").val().trim();
-    let firstTrain = $("#first-train").val().trim();
-    let freq = $("#frequency").val().trim();
+    $("#train-info").validate({
+        rules: {
+            name: {
+                required: true
+            },
+            destination: {
+                required: true
+            },
+            first_train: {
+                required: true,
+                time: true
+            },
+            frequency: {
+                required: true,
+                number: true
+            }
+        },
+        submitHandler: function (form) {
+            
+            let name = $("#name").val().trim();
+            let destination = $("#destination").val().trim();
+            let firstTrain = $("#first-train").val().trim();
+            let freq = $("#frequency").val().trim();
 
-    db.ref().push({
-        name: name,
-        destination: destination,
-        freq: freq,
-        firstTrain: firstTrain
+            db.ref().push({
+                name: name,
+                destination: destination,
+                freq: freq,
+                firstTrain: firstTrain
+            })
+
+            $("#name").val("");
+            $("#destination").val("");
+            $("#first-train").val("");
+            $("#frequnecy").val("");
+
+        }
     })
+})
 
-    $("#name").val("");
-    $("#destination").val("");
-    $("#first-train").val("");
-    $("#frequnecy").val("");
+// I found a jQuery library for validating forms so I used that 
+// Here is the origin submit button click function
 
-});
+//Retrieving and submitting user data to store in Firebase
+// $("#submit-button").on("click", function () {
+//     event.preventDefault();
 
-db.ref().on("child_added", function(snap) {
+//     let name = $("#name").val().trim();
+//     let destination = $("#destination").val().trim();
+//     let firstTrain = $("#first-train").val().trim();
+//     let freq = $("#frequency").val().trim();
+
+//     db.ref().push({
+//         name: name,
+//         destination: destination,
+//         freq: freq,
+//         firstTrain: firstTrain
+//     })
+
+//     $("#name").val("");
+//     $("#destination").val("");
+//     $("#first-train").val("");
+//     $("#frequnecy").val("");
+
+// });
+
+db.ref().on("child_added", function (snap) {
 
     name = snap.val().name;
     destination = snap.val().destination;

@@ -8,6 +8,7 @@ body {
     background: #9F2B00;
     border: 2px solid #D37506;
     color: white;
+    font-weight: bold;
 }
 
 th {
@@ -24,6 +25,16 @@ th {
     border: 1px solid #9F2B00;
 }
 
+.form-control:focus {
+    border: 1px solid #D37506;
+    box-shadow: inset 0 0 0, 0 0 0;
+}
+
 .form-label {
     font-weight: bold;
+}
+
+/* When the form returns an invalid field it will be displayed in red */
+.error {
+    color:#FF0000;
 }
